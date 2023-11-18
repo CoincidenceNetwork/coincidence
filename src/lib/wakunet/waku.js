@@ -49,7 +49,14 @@ export async function createNode() {
 
 export async function subscribeToUserData(node, callback) {
   const subcription = await node.filter.createSubscription();
-  await subcription.subscribe([decoder], callback);
+  await subcription.subscribe([decoder], (message) => {
+    try {
+      const decodedData = PUserDataMessage.decode(message.payload);
+      callback(decodedData);
+    } catch (e) {
+      console.error("Failed to decode message payload", e);
+    }
+  });
   console.log("Subscribed to messages");
 }
 
