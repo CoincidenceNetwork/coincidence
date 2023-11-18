@@ -4,19 +4,22 @@ import { Toaster } from "@/components/ui/toaster";
 
 import "@/styles/globals.css";
 import BottomNavigation from "@/components/bottom-navigation";
+import ClientOnly from "@/components/client-only";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="light"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <Component {...pageProps} />
-      <Toaster />
-      <BottomNavigation></BottomNavigation>
-    </ThemeProvider>
+    <ClientOnly>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="light"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <Component {...pageProps} />
+        <Toaster />
+        <BottomNavigation></BottomNavigation>
+      </ThemeProvider>
+    </ClientOnly>
   );
 };
 
