@@ -10,9 +10,9 @@ import { LightNode } from "@waku/sdk";
 import { createNode } from "@/lib/wakunet/waku";
 
 const Coincidence: AppType = ({ Component, pageProps }) => {
-  useEffect(() => {
-    localStorage.setItem("debug", "waku*"); // TBD unsure if this works
-  }, []);
+  // useEffect(() => {
+  //   localStorage.setItem("debug", "waku*"); // TBD unsure if this works
+  // }, []);
 
   const [wakuNode, setWakuNode] = useState<LightNode | null>(null);
   useEffect(() => {

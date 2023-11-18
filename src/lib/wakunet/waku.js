@@ -9,7 +9,6 @@
     query for past messages
   */
 
-import React from "react";
 import protobuf from "protobufjs";
 import {
   createLightNode,
@@ -36,7 +35,7 @@ export const PUserDataMessage = new protobuf.Type("UserDataMessage")
 
 // import { PUserDataMessage, UserDataMessage } from "../../types/alltypes";
 
-const contentTopic = "/coincidence/";
+const contentTopic = "/coincidence/0";
 const encoder = createEncoder({ contentTopic });
 const decoder = createDecoder(contentTopic);
 
@@ -55,19 +54,37 @@ export async function subscribeToUserData(node, callback) {
 }
 
 export async function postUserData(node, userData) {
-  console.log("Posting message:", userData);
+  console.log("Posting message...", userData.id);
   const protoMessage = PUserDataMessage.create(userData);
   const serializedMessage = PUserDataMessage.encode(protoMessage).finish();
-  console.log("Serialized message:", serializedMessage);
   await node.lightPush.send(encoder, { payload: serializedMessage });
-  console.log("Sent message:", userData);
   const deserializedMessage = PUserDataMessage.decode(serializedMessage);
-  console.log("Deserialized message:", deserializedMessage);
+  console.log("Sent message:", deserializedMessage);
 }
 
 export async function stopNode(node) {
   await node.stop();
   console.log("Node stopped");
+}
+
+export async function getExistingUserData(node, callback) {
+  try {
+    for await (const userDataPromises of node.store.queryGenerator([decoder])) {
+      for (const p of userDataPromises) {
+        const data = await p;
+        try {
+          const decodedData = PUserDataMessage.decode(data.payload);
+          if (decodedData) {
+            callback(decodedData);
+          }
+        } catch (e) {
+          console.error("Failed to deserialize user data", e);
+        }
+      }
+    }
+  } catch (e) {
+    console.error("Failed to retrieve user data", e);
+  }
 }
 
 export async function getPastMessages(node) {
