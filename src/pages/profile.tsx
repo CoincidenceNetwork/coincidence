@@ -1,16 +1,14 @@
-import React from "react";
-import { PlusCircle } from "lucide-react";
 import Header from "@/components/header";
-import BottomNavigation from "@/components/bottom-navigation";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { PlusCircle } from "lucide-react";
 
 const ProfilePage = () => {
   return (
     <>
       <Header></Header>
-      <main className="px- flex min-h-[calc(100vh-64px)] w-full flex-col px-8 py-20">
+      <main className="flex min-h-[calc(100vh-64px)] w-full flex-col px-8 py-20">
         {/* Section 1 */}
         <div className="flex ">
           <div className="w-2/3">
