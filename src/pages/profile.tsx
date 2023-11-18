@@ -1,33 +1,79 @@
-import BottomNavigation from "@/components/bottom-navigation";
+import React from "react";
+import { PlusCircle } from "lucide-react";
 import Header from "@/components/header";
-import { Button } from "@/components/ui/button";
+import BottomNavigation from "@/components/bottom-navigation";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 
-export default function Home() {
+const ProfilePage = () => {
   return (
     <>
       <Header></Header>
-      <main className="flex min-h-[calc(100vh-64px)] w-full flex-col">
-        <div
-          className="min-h-screen bg-cover bg-center"
-          style={{ backgroundImage: `url(https://images.unsplash.com/photo-1493612276216-ee3925520721?w=1600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmFuZG9tfGVufDB8fDB8fHww)` }}
-        >
-          {/* The content of your app */}
-          <div className="container flex w-full flex-col gap-4 py-4">
-            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-              Heading
-            </h1>
-            <Button
-              onClick={() => {
-                alert("hello");
-                console.log("Hello");
-              }}
-            >
-              Hello
-            </Button>
+      <main className="px- flex min-h-[calc(100vh-64px)] w-full flex-col px-8 py-20">
+        {/* Section 1 */}
+        <div className="flex ">
+          <div className="w-2/3">
+            <h2 className="text-xl font-bold">Vitalik</h2>
+            <div className="mt-4 flex items-center space-x-2">
+              <Switch id="airplane-mode" />
+              <Label htmlFor="airplane-mode">Airplane Mode</Label>
+            </div>
+          </div>
+          <div className="flex w-1/3 justify-end">
+            <div className="h-16 w-16 rounded-full bg-gray-300"></div>
+          </div>
+        </div>
+
+        {/* Section 2 */}
+        <div className="mt-6">
+          <h2 className="text-xl font-bold">Bio</h2>
+          <Textarea className="mt-2 h-32 w-full rounded border border-gray-300 p-2"></Textarea>
+        </div>
+
+        {/* Section 3 */}
+        <div className="mt-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold">Contexts</h2>
+            <button className="p-2">
+              <PlusCircle />
+            </button>
+          </div>
+          <div className="mt-4 flex items-center space-x-2">
+            <Switch id="airplane-mode" />
+            <Label htmlFor="airplane-mode">ETH GLOBAL Istanbul 2023</Label>
+          </div>
+        </div>
+
+        {/* Section 4 */}
+        <div className="mt-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold">Interests</h2>
+            <button className="p-2">
+              <PlusCircle />
+            </button>
+          </div>
+          <div className="mt-4 flex items-center space-x-2">
+            <Switch />
+            <Label htmlFor="airplane-mode">Network State</Label>
+          </div>
+          <div className="mt-4 flex items-center space-x-2">
+            <Switch />
+            <Label htmlFor="airplane-mode">Waku</Label>
+          </div>
+
+          <div className="mt-4 flex items-center space-x-2">
+            <Switch />
+            <Label htmlFor="airplane-mode">Ethereum Attestation Service</Label>
+          </div>
+          <div className="mt-4 flex items-center space-x-2">
+            <Switch />
+            <Label htmlFor="airplane-mode">Public Good</Label>
           </div>
         </div>
       </main>
-      <BottomNavigation></BottomNavigation>
     </>
   );
-}
+};
+
+export default ProfilePage;
