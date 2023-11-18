@@ -14,6 +14,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     >
       <Component {...pageProps} />
       <Toaster />
+      Bottm
     </ThemeProvider>
   );
 };
