@@ -26,9 +26,9 @@ const CardList = ({ pastUserData }: { pastUserData: UserDataMessage[] }) => {
             <div className="flex items-center">
               <div className="h-16 w-16 rounded-full bg-gray-300"></div>
               <div className="ml-2 flex">
-                {interests.map((interest) => (
+                {interests.map((interest, index) => (
                   <span
-                    key={interest}
+                    key={interest + index}
                     className="mr-2 rounded bg-gray-200 px-2 py-1 text-sm text-gray-800"
                   >
                     {interest}
@@ -49,6 +49,7 @@ const ConnectPage = ({ wakuNode }) => {
   const [usersData, setUsersData] = useState<any[]>([]);
 
   const processReceivedUserData = (userData: DecodedMessage) => {
+    console.log("Connect: Received user data!", userData);
     try {
       setUsersData((prevData) => {
         const isUnique = !prevData.some((data) => data.id === userData.id);
