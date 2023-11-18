@@ -23,6 +23,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import useStore from "@/lib/store";
+import { UploadButton } from "@/lib/uploadthing";
 import { postUserData } from "@/lib/wakunet/waku";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LightNode } from "@waku/sdk";
@@ -155,7 +156,22 @@ const ProfilePage = (wakuNode: LightNode) => {
                 </FormItem>
               )}
             />
-            <FormField
+            <UploadButton
+              endpoint="imageUploader"
+              onClientUploadComplete={(res) => {
+                // Do something with the response
+                console.log("Files: ", res);
+                form.setValue(
+                  "img",
+                  res[0]?.url ? res[0].url : "https://picsum.photos/200 ",
+                );
+              }}
+              onUploadError={(error: Error) => {
+                // Do something with the error.
+                alert(`ERROR! ${error.message}`);
+              }}
+            />
+            {/* <FormField
               control={form.control}
               name="img"
               render={({ field }) => (
@@ -166,7 +182,7 @@ const ProfilePage = (wakuNode: LightNode) => {
                   </FormControl>
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="airpline"
