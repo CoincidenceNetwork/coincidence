@@ -6,7 +6,8 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "test": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'src/**/*.spec.ts'"
   },
   "dependencies": {
     "@arx-research/libhalo": "^1.2.19",
@@ -43,20 +44,26 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.10",
     "@types/eslint": "^8.44.2",
+    "@types/mocha": "^10.0.4",
     "@types/node": "^18.16.0",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.3.0",
     "@typescript-eslint/parser": "^6.3.0",
     "autoprefixer": "^10.4.14",
+    "chai": "^4.3.10",
+    "cross-env": "^7.0.3",
     "eslint": "^8.47.0",
     "eslint-config-next": "^13.5.4",
+    "mocha": "^10.2.0",
     "postcss": "^8.4.27",
     "prettier": "^3.0.0",
     "prettier-plugin-tailwindcss": "^0.5.1",
     "tailwindcss": "^3.3.3",
-    "typescript": "^5.1.6"
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
   },
   "ct3aMetadata": {
     "initVersion": "7.22.0"
