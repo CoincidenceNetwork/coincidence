@@ -21,7 +21,7 @@ const Coincidence: AppType = ({ Component, pageProps }) => {
       const node = await createNode();
       setWakuNode(node);
     })();
-  }, [wakuNode]);
+  }, []);
 
   if (!wakuNode) {
     return (

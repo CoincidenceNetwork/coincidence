@@ -44,13 +44,11 @@ const CardList = ({ pastUserData }: { pastUserData: UserDataMessage[] }) => {
 };
 
 const ConnectPage = ({ wakuNode }) => {
-  console.log("Connect Page wakuNode", wakuNode);
   // const context = localStorage.getItem("context");
 
   const [usersData, setUsersData] = useState<any[]>([]);
 
   const processReceivedUserData = (userData: DecodedMessage) => {
-    console.log("Received user data message:", userData);
     try {
       setUsersData((prevData) => {
         const isUnique = !prevData.some((data) => data.id === userData.id);
@@ -60,7 +58,6 @@ const ConnectPage = ({ wakuNode }) => {
           return prevData;
         }
       });
-      console.log("Received user data:", userData);
     } catch (error) {
       console.error("Error processing received user data:", error);
     }
@@ -74,7 +71,7 @@ const ConnectPage = ({ wakuNode }) => {
       await subscribeToUserData(wakuNode, processReceivedUserData);
     };
     obtainingUserData();
-  }, [wakuNode]);
+  }, []);
 
   if (!usersData) {
     return <div>Loading user data...</div>;
