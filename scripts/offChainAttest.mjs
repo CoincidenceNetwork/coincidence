@@ -30,7 +30,7 @@ const offchainAttestation = await offchain.signOffchainAttestation(
     version: 1,
     nonce: 0,
     schema:
-      "0xb16fa048b0d597f5a821747eba64efa4762ee5143e9a80600d0005386edfc995",
+      "0xbd23de8698370392ae9a462e98db7e6344b4afb9b5d3ab2d4a36746a1da98b2a",
     refUID:
       "0x0000000000000000000000000000000000000000000000000000000000000000",
     data: encodedData,

@@ -12,7 +12,7 @@ const schemaRegistry = new SchemaRegistry(schemaRegistryContractAddress);
 // @ts-ignore
 schemaRegistry.connect(signer);
 
-const schema = "string interestingggg";
+const schema = "string interestingggggg";
 const resolverAddress = "0x0000000000000000000000000000000000000000"; // Sepolia 0.26
 const revocable = true;
 

@@ -2,9 +2,20 @@ import Header from "@/components/header";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import useStore from "@/lib/store";
 import { PlusCircle } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const ProfilePage = () => {
+  const { context, setContext } = useStore();
+
   return (
     <>
       <Header></Header>
@@ -47,9 +58,20 @@ const ProfilePage = () => {
         <div className="mt-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold">Interests</h2>
-            <button className="p-2">
-              <PlusCircle />
-            </button>
+            <Sheet>
+              <SheetTrigger>
+                <PlusCircle />
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Are you sure absolutely sure?</SheetTitle>
+                  <SheetDescription>
+                    This action cannot be undone. This will permanently delete
+                    your account and remove your data from our servers.
+                  </SheetDescription>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
           </div>
           <div className="mt-4 flex items-center space-x-2">
             <Switch />

@@ -24,7 +24,7 @@ const encodedData = schemaEncoder.encodeData([
   { name: "interest3", value: "", type: "string" },
 ]);
 const tx = await eas.attest({
-  schema: "0x9a5415ee7c61920087da60b18704cf4406ac4823641149e308db9844c00fc177",
+  schema: "0xbd23de8698370392ae9a462e98db7e6344b4afb9b5d3ab2d4a36746a1da98b2a",
   data: {
     recipient: "0x0000000000000000000000000000000000000000",
     expirationTime: BigInt(0),

@@ -11,7 +11,7 @@ const eas = new EAS("0x4200000000000000000000000000000000000021");
 eas.connect(provider);
 
 const uid =
-  "0xb16fa048b0d597f5a821747eba64efa4762ee5143e9a80600d0005386edfc995";
+  "0xfcb39af1be5f18c03dc4f77d981520430f41553527ef4e5b0ea5390f8707cb42";
 
 const attestation = await eas.getAttestation(uid);
 
