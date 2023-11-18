@@ -62,7 +62,7 @@ const App = () => {
           <Button
             type="submit"
             onClick={handleSubmit}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500 text-white"
+            className="flex h-10 w-10 items-center justify-center rounded-full"
           >
             Send
           </Button>
