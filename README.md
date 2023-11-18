@@ -1,2 +1,1 @@
-# coincidence
-Flexible and private matchmaking protocol and apps
+# coincidence-ethglobal2023istanbul
