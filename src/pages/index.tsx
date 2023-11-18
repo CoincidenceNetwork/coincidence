@@ -11,7 +11,7 @@ export default function Home() {
           <div className="container flex w-full flex-col gap-4 py-4">
             <div className="flex w-full flex-col items-center justify-center">
               <img src="/logo.svg" alt="" className="w-32" />
-              <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+              <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-center">
                 WELCOME TO COINCIDENCE!
               </h1>
               <h2 className="mt-8 scroll-m-20 text-2xl font-semibold tracking-tight">
