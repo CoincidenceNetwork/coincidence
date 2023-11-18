@@ -7,7 +7,8 @@
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
-    "test": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'src/**/*.spec.ts'"
+    "test": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'src/**/*.spec.ts'",
+    "create:schema": "dotenv node scripts/schema.mjs"
   },
   "dependencies": {
     "@arx-research/libhalo": "^1.2.19",
@@ -35,6 +36,7 @@
     "ai": "^2.2.24",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "dotenv-cli": "^7.3.0",
     "ethers": "^5",
     "lucide-react": "^0.290.0",
     "next": "^13.5.4",
