@@ -9,6 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@ethereum-attestation-service/eas-sdk": "^1.3.3",
     "@hookform/resolvers": "^3.3.2",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
     "@radix-ui/react-avatar": "^1.0.4",
@@ -27,6 +28,7 @@
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-toggle": "^1.0.3",
     "@t3-oss/env-nextjs": "^0.7.0",
+    "@waku/sdk": "^0.0.21",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "lucide-react": "^0.290.0",
