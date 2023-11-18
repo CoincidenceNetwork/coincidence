@@ -1,4 +1,5 @@
 import Header from "@/components/header";
+import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 
 const App = () => {
@@ -58,13 +59,13 @@ const App = () => {
             onChange={(e) => setInput(e.target.value)}
             className="mr-2 flex-grow rounded-full bg-gray-100 px-3 py-2 focus:outline-none"
           />
-          <button
+          <Button
             type="submit"
             onClick={handleSubmit}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500 text-white"
           >
             Send
-          </button>
+          </Button>
         </form>
       </main>
     </>

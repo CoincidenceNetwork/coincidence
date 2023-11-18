@@ -1,4 +1,5 @@
 import Header from "@/components/header";
+import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
@@ -33,9 +34,9 @@ const ProfilePage = () => {
         <div className="mt-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold">Contexts</h2>
-            <button className="p-2">
+            <Button className="p-2">
               <PlusCircle />
-            </button>
+            </Button>
           </div>
           <div className="mt-4 flex items-center space-x-2">
             <Switch id="airplane-mode" />
@@ -47,9 +48,9 @@ const ProfilePage = () => {
         <div className="mt-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold">Interests</h2>
-            <button className="p-2">
+            <Button className="p-2">
               <PlusCircle />
-            </button>
+            </Button>
           </div>
           <div className="mt-4 flex items-center space-x-2">
             <Switch />
