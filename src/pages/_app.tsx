@@ -1,8 +1,9 @@
 import { type AppType } from "next/dist/shared/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
 
 import "@/styles/globals.css";
+import BottomNavigation from "@/components/bottom-navigation";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
@@ -14,7 +15,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     >
       <Component {...pageProps} />
       <Toaster />
-      Bottm
+      <BottomNavigation></BottomNavigation>
     </ThemeProvider>
   );
 };

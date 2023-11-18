@@ -3,7 +3,7 @@ import React from "react";
 
 const BottomNavigation = () => {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 flex items-center justify-around bg-background  py-2">
+    <nav className="fixed bottom-0 left-0 right-0 flex items-center justify-around bg-background py-2 border-t">
       <a href="#" className="flex flex-col items-center">
         <MessageCircle />
         <span className="text-xs">Chat</span>
