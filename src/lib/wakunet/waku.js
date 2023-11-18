@@ -1,0 +1,94 @@
+/*
+    topic
+    encoder decoders (json is ok alternative)
+      separate encoder for topic
+      separate encoder for writing messages (ephemeral param e.g. handshakes)
+      https://js.waku.org/modules/_waku_message_encryption.html for encrypting 
+    waku = create light node (light push, filter, store)
+    subscribe for new messags
+    query for past messages
+  */
+
+import React from "react";
+import protobuf from "protobufjs";
+import {
+  createLightNode,
+  createDecoder,
+  bytesToUtf8,
+  waitForRemotePeer,
+  createEncoder,
+  DecodedMessage,
+} from "@waku/sdk";
+
+// export interface UserDataMessage {
+//   name: string;
+//   bio: string;
+//   img: string;
+//   interests: string[]; // later on, attestations
+// }
+
+export const PUserDataMessage = new protobuf.Type("UserDataMessage")
+  .add(new protobuf.Field("id", 1, "string"))
+  .add(new protobuf.Field("name", 2, "string"))
+  .add(new protobuf.Field("bio", 3, "string"))
+  .add(new protobuf.Field("img", 4, "string"))
+  .add(new protobuf.Field("interests", 5, "string", "repeated"));
+
+// import { PUserDataMessage, UserDataMessage } from "../../types/alltypes";
+
+const contentTopic = "/coincidence/";
+const encoder = createEncoder({ contentTopic });
+const decoder = createDecoder(contentTopic);
+
+export async function createNode() {
+  const node = await createLightNode({ defaultBootstrap: true });
+  await node.start();
+  await waitForRemotePeer(node);
+  console.log("Node started");
+  return node;
+}
+
+export async function subscribeToUserData(node, callback) {
+  const subcription = await node.filter.createSubscription();
+  await subcription.subscribe([decoder], callback);
+  console.log("Subscribed to messages");
+}
+
+export async function postUserData(node, userData) {
+  console.log("Posting message:", userData);
+  const protoMessage = PUserDataMessage.create(userData);
+  const serializedMessage = PUserDataMessage.encode(protoMessage).finish();
+  console.log("Serialized message:", serializedMessage);
+  await node.lightPush.send(encoder, { payload: serializedMessage });
+  console.log("Sent message:", userData);
+  const deserializedMessage = PUserDataMessage.decode(serializedMessage);
+  console.log("Deserialized message:", deserializedMessage);
+}
+
+export async function stopNode(node) {
+  await node.stop();
+  console.log("Node stopped");
+}
+
+export async function getPastMessages(node) {
+  const messages = [];
+  try {
+    for await (const messagesPromises of node.store.queryGenerator([decoder])) {
+      const decodedMessages = await Promise.all(
+        messagesPromises.map(async (p) => {
+          const msg = await p;
+          try {
+            return PUserDataMessage.decode(msg.payload);
+          } catch (e) {
+            console.error("Failed to deserialize message", e);
+            return null;
+          }
+        }),
+      );
+      messages.push(...decodedMessages.filter(Boolean));
+    }
+  } catch (e) {
+    console.error("Failed to retrieve messages", e);
+  }
+  return messages;
+}

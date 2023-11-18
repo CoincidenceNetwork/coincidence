@@ -1,6 +1,6 @@
 {
-  "extension": ["ts"],
-  "spec": "src/**/*.spec.ts",
-  "require": ["ts-node/register", "source-map-support/register"],
+  "require": "ts-node/register",
+  "extension": ["js", "ts"],
+  "spec": ["src/**/*.spec.ts", "src/**/*.spec.js"],
   "recursive": true
 }

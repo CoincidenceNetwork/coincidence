@@ -5,11 +5,14 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
+    "test": "mocha",
     "lint": "next lint",
     "start": "next start",
-    "test": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'src/**/*.spec.ts'",
     "create:schema": "dotenv node scripts/schema.mjs",
-    "attest": "dotenv node scripts/offChainAttest.mjs"
+    "attest": "dotenv node scripts/offChainAttest.mjs",
+    "post:userData": "DEBUG=waku* node scripts/postUserData.mjs",
+    "get:userData": "DEBUG=waku* node scripts/subscribeUserData.mjs",
+    "get:pastUserData": "DEBUG=waku* node scripts/getPastUserData.mjs"
   },
   "dependencies": {
     "@arx-research/libhalo": "^1.2.19",

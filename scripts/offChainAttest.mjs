@@ -37,4 +37,7 @@ const offchainAttestation = await offchain.signOffchainAttestation(
   },
   signer,
 );
-console.log("🚀 ~ file: offChainAttest.mjs:40 ~ offchainAttestation:", offchainAttestation)
+console.log(
+  "🚀 ~ file: offChainAttest.mjs:40 ~ offchainAttestation:",
+  offchainAttestation,
+);

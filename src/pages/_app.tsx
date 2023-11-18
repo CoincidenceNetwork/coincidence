@@ -5,8 +5,38 @@ import { Toaster } from "@/components/ui/toaster";
 import "@/styles/globals.css";
 import BottomNavigation from "@/components/bottom-navigation";
 import ClientOnly from "@/components/client-only";
+import { useEffect, useState } from "react";
+import { LightNode } from "@waku/sdk";
+import { createNode } from "@/lib/wakunet/waku";
 
-const MyApp: AppType = ({ Component, pageProps }) => {
+const Coincidence: AppType = ({ Component, pageProps }) => {
+  useEffect(() => {
+    localStorage.setItem("debug", "waku*"); // TBD unsure if this works
+  }, []);
+
+  const [wakuNode, setWakuNode] = useState<LightNode | null>(null);
+  useEffect(() => {
+    if (wakuNode) return;
+    (async () => {
+      const node = await createNode();
+      setWakuNode(node);
+    })();
+  }, [wakuNode]);
+
+  if (!wakuNode) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        Loading Waku Network...
+      </div>
+    );
+  }
   return (
     <ClientOnly>
       <ThemeProvider
@@ -15,7 +45,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         enableSystem
         disableTransitionOnChange
       >
-        <Component {...pageProps} />
+        <Component {...pageProps} wakuNode={wakuNode} />
         <Toaster />
         <BottomNavigation></BottomNavigation>
       </ThemeProvider>
@@ -23,4 +53,4 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   );
 };
 
-export default MyApp;
+export default Coincidence;

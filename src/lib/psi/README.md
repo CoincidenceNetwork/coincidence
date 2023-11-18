@@ -1,28 +1,4 @@
-```
-    testing simple PSI flow
-
-    test1
-    userA: {x,y,z,3}
-    userB: {x,y,f,3}
-    expected result:
-    intersectionAB: {x,y,3}
-
-    test2
-    userA: {x,y,1,2}
-    userB: {x,y,4,2}
-    userC: {x,y,4,3}
-    expected result:
-    intersectionAB: {x,y,2}
-    intersectionBC: {x,y,4}
-    intersectionAC: {x,y}
-
-    simple PSI interface/flow:
-    create_myself() -> me
-    get_interests(userID) -> interests[userID]
-    me.intersection(userID, interests[userID]) -> intersection[userID]
-```
-
----
+# Private Set Intersection
 
 ## varia
 
@@ -106,3 +82,82 @@ malicious
 influential publications in the space
 
 ## computing over the intersection
+
+## LessWrong Nov 2023 new matchmaking feature
+
+https://www.lesswrong.com/posts/d65Ax6vbNgztBE8cy/new-lesswrong-feature-dialogue-matching
+
+## simple formalization
+
+## extra notes
+
+## N-party PSI with Zero-Knowledge Proofs
+
+```python
+import random
+import hashlib
+from zkplib import ZKPExponentiationProof
+
+def hash(input):
+    return int(hashlib.sha256(str(input).encode('utf-8')).hexdigest(), 16)
+
+def random_exponent():
+    return random.randint(1, 2**256)
+
+def exponentiate(value, exponent):
+    return pow(value, exponent)
+
+def user_psi_set(user_set):
+    exp = random_exponent()
+    hashed_set_exp = {item: exponentiate(hash(item), exp) for item in user_set}
+    return exp, hashed_set_exp
+
+def generate_zkp_exponentiation(set_elements, exponent):
+    return {element: ZKPExponentiationProof.create(hash(element), exponent) for element in set_elements}
+
+def verify_zkp_exponentiation(proofs, hashed_exponentiated_sets):
+    return all(ZKPExponentiationProof.verify(hashed_exponentiated_sets[user][element], proofs[user][element])
+               for user in proofs for element in proofs[user])
+
+def compute_intersections(local_hashed_set_exp, other_users_hashed_sets, local_exp, other_users_exps):
+    intersections = {user: set() for user in other_users_hashed_sets}
+    for user, other_user_hashed_set in other_users_hashed_sets.items():
+        for local_element, local_val in local_hashed_set_exp.items():
+            for other_element, other_val in other_user_hashed_set.items():
+                if exponentiate(local_val, other_users_exps[user]) == exponentiate(other_val, local_exp):
+                    intersections[user].add(local_element)
+    return intersections
+
+def main():
+    local_user_set = {'local1', 'local2', 'local3'}
+    other_users_sets = {
+        'user1': {'user1_item1', 'user1_item2', 'local1'},
+        'user2': {'user2_item1', 'local2', 'local3'},
+        # ... add as many users as needed
+    }
+
+    local_exp, local_hashed_set_exp = user_psi_set(local_user_set)
+    other_users_hashed_sets = {user: user_psi_set(other_users_sets[user])[1] for user in other_users_sets}
+    other_users_exps = {user: user_psi_set(other_users_sets[user])[0] for user in other_users_sets}
+
+    local_zkp = generate_zkp_exponentiation(local_user_set, local_exp)
+    other_users_zkps = {user: generate_zkp_exponentiation(other_users_sets[user], other_users_exps[user]) for user in other_users_sets}
+
+    if not verify_zkp_exponentiation({'local': local_zkp}, {'local': local_hashed_set_exp}):
+        raise Exception("Local user's ZKP failed")
+    if not verify_zkp_exponentiation(other_users_zkps, other_users_hashed_sets):
+        raise Exception("One of the other users' ZKP failed")
+
+    all_intersections = compute_intersections(local_hashed_set_exp, other_users_hashed_sets, local_exp, other_users_exps)
+    for user, intersection in all_intersections.items():
+        print(f"Intersection with {user}:", intersection)
+
+main()
+
+```
+
+## WIP
+
+userA publishes their 'encrypted set of interests' over pubsub
+userB obtains the 'encrypted set of interests' from pubsub
+userB compute their intersection from userB's 'encrypted set of interests' using PSI
