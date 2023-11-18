@@ -44,7 +44,7 @@
     "dotenv-cli": "^7.3.0",
     "ethers": "^6",
     "lucide-react": "^0.290.0",
-    "next": "^13.5.4",
+    "next": "^14",
     "next-themes": "^0.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
