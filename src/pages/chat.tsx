@@ -1,16 +1,12 @@
 import Header from "@/components/header";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const App = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-    });
+    scrollTo({ top: 2000, behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -32,7 +28,7 @@ const App = () => {
     <>
       <Header></Header>
       <main className="flex min-h-[calc(100vh-64px)] w-full flex-col px-8 py-20">
-        <div className="flex-grow overflow-y-auto px-4 pt-72 pb-8">
+        <div className="flex-grow overflow-y-auto px-4 pb-10 pt-72">
           <div className="flex flex-col space-y-2">
             {messages.map((message, index) => (
               <div
@@ -52,7 +48,6 @@ const App = () => {
                 </div>
               </div>
             ))}
-            <div ref={messagesEndRef} />
           </div>
         </div>
         <form className="fixed bottom-0 left-0 flex w-full items-center border-t bg-background px-4 pb-16 pt-2">
