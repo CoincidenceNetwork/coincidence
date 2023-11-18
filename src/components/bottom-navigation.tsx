@@ -4,11 +4,11 @@ import React from "react";
 const BottomNavigation = () => {
   return (
     <nav className="fixed bottom-0 left-0 right-0 flex items-center justify-around bg-background py-2 border-t">
-      <a href="#" className="flex flex-col items-center">
+      <a href="/chat" className="flex flex-col items-center">
         <MessageCircle />
         <span className="text-xs">Chat</span>
       </a>
-      <a href="#" className="flex flex-col items-center">
+      <a href="/connect" className="flex flex-col items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
@@ -20,7 +20,7 @@ const BottomNavigation = () => {
         </svg>
         <span className="text-xs">Connect</span>
       </a>
-      <a href="#" className="flex flex-col items-center">
+      <a href="/learn" className="flex flex-col items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"

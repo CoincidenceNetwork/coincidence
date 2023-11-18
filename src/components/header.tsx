@@ -1,4 +1,5 @@
 import { User } from "lucide-react";
+import Link from "next/link";
 
 const Header = () => {
   return (
@@ -6,8 +7,12 @@ const Header = () => {
       className={`fixed left-0 top-0 z-10 w-full bg-background shadow-md`}
     >
       <nav className="flex items-center justify-between px-4 py-4">
-        <div className="font-bold">Coincidence</div>
-        <User />
+        <Link href="/">
+          <div className="font-bold">Coincidence</div>
+        </Link>
+        <Link href="/profile">
+          <User />
+        </Link>
       </nav>
     </header>
   );
