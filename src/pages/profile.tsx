@@ -59,10 +59,10 @@ const ProfilePage = () => {
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold">Interests</h2>
             <Sheet>
-              <SheetTrigger>
+              <SheetTrigger className="p-2">
                 <PlusCircle />
               </SheetTrigger>
-              <SheetContent>
+              <SheetContent side={"bottom"}>
                 <SheetHeader>
                   <SheetTitle>Are you sure absolutely sure?</SheetTitle>
                   <SheetDescription>
