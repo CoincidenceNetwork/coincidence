@@ -8,9 +8,42 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
+import { LightNode, createLightNode } from "@waku/sdk";
+import React, { useEffect, useState } from "react";
+import { createNode, postUserData } from "../lib/wakunet/waku";
+import { UserDataMessage } from "@/types/alltypes";
+export interface ProfileData {
+  name: string;
+  bio: string;
+  img: string;
+  context: string;
+  interests: string[];
+}
 const ProfilePage = (wakuNode: LightNode) => {
   const { context, setContext } = useStore();
+
+  // TBD for the form inputs?
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
+  const [img, setImg] = useState("");
+  const [interests, setInterests] = useState([]);
+  const handleSubmit = (node: LightNode, event: any) => {
+    event.preventDefault();
+    const profileData = { name, bio, img, context, interests };
+    handleProfileSend(node, profileData);
+  };
+  // form function, also saves context to localstorage
+  async function handleProfileSend(node: LightNode, profileData: ProfileData) {
+    const context = profileData.context;
+    // localStorage.setItem("context", context); TBD
+    const userData: UserDataMessage = {
+      name: profileData.name,
+      bio: profileData.bio,
+      img: profileData.img,
+      interests: profileData.interests,
+    };
+    postUserData(node, userData);
+  }
 
   return (
     // TODO make this a form
