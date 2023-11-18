@@ -23,12 +23,12 @@ const offchainAttestation = await offchain.signOffchainAttestation(
   {
     recipient: "0xFD50b031E778fAb33DfD2Fc3Ca66a1EeF0652165",
     // Unix timestamp of when attestation expires. (0 for no expiration)
-    expirationTime: 0,
+    expirationTime: BigInt(0),
     // Unix timestamp of current time
-    time: 1671219636,
+    time: BigInt(1671219636),
     revocable: true, // Be aware that if your schema is not revocable, this MUST be false
     version: 1,
-    nonce: 0,
+    nonce: BigInt(0),
     schema:
       "0xbd23de8698370392ae9a462e98db7e6344b4afb9b5d3ab2d4a36746a1da98b2a",
     refUID:
