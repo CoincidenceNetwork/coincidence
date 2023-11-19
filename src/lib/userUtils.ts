@@ -21,7 +21,6 @@ export function computeUserID(profile: UserProfile) {
 
 export function getStoredProfile() {
   const storedProfile = localStorage.getItem("userProfile");
-  console.log("storedProfile", storedProfile);
   return storedProfile
     ? (JSON.parse(storedProfile) as UserProfile)
     : {
