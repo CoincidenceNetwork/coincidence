@@ -37,7 +37,7 @@ export const PUserDataMessage = new protobuf.Type("UserDataMessage")
 
 // import { PUserDataMessage, UserDataMessage } from "../../types/alltypes";
 
-const contentTopic = "/coincidence/0";
+const contentTopic = "/coincidence/1";
 const encoder = createEncoder({ contentTopic });
 const decoder = createDecoder(contentTopic);
 

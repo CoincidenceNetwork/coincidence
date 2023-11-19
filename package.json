@@ -11,6 +11,7 @@
     "create:schema": "dotenv node scripts/schema.mjs",
     "attest": "dotenv node scripts/offChainAttest.mjs",
     "post:userData": "DEBUG=waku* node scripts/postUserData.mjs",
+    "post:userDemoData": "DEBUG=waku* node scripts/postUserDemoData.mjs",
     "get:userData": "DEBUG=waku* node scripts/subscribeUserData.mjs",
     "get:pastUserData": "DEBUG=waku* node scripts/getPastUserData.mjs"
   },
