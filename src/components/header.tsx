@@ -1,9 +1,3 @@
-import { User } from "lucide-react";
-import Link from "next/link";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { Button } from "./ui/button";
-import { useAccount } from "wagmi";
-import { MetaMaskButton } from "@metamask/sdk-react-ui";
 import {
   Dialog,
   DialogContent,
@@ -12,6 +6,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { MetaMaskButton } from "@metamask/sdk-react-ui";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
+import Link from "next/link";
+import { useAccount } from "wagmi";
+import { Button } from "./ui/button";
 
 function shortenAddress(address: string, length: number = 8): string {
   const prefixLength = Math.floor(length / 2);

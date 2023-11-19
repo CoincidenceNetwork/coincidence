@@ -238,7 +238,10 @@ const EASInterests = () => {
         "🚀 ~ file: profile.tsx:283 ~ onClick={ ~ signedOffAttestation:",
         signedOffAttestation,
       );
-      setInterests([{ id: signedOffAttestation.uid, name: currentInterest}]);
+      setInterests([
+        ...interests,
+        { id: signedOffAttestation.uid, name: currentInterest },
+      ]);
 
       setToggleDialog(!toggleDialog);
     }
