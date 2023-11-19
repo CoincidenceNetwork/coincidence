@@ -55,33 +55,6 @@ const formSchema = z.object({
   interests: z.array(z.string()),
 });
 
-const items = [
-  {
-    id: "recents",
-    label: "Recents",
-  },
-  {
-    id: "home",
-    label: "Home",
-  },
-  {
-    id: "applications",
-    label: "Applications",
-  },
-  {
-    id: "desktop",
-    label: "Desktop",
-  },
-  {
-    id: "downloads",
-    label: "Downloads",
-  },
-  {
-    id: "documents",
-    label: "Documents",
-  },
-] as const;
-
 const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
   const { context, setContext, interests, setInterests } = useStore();
 
