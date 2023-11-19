@@ -29,12 +29,9 @@ const Header = () => {
     >
       <nav className="flex items-center justify-between px-4 py-4">
         <Link href="/">
-          <div className="font-bold">Coincidence</div>
+          <div className="text-xl font-bold">Coincidence</div>
         </Link>
         <div className="flex flex-row items-center gap-2">
-          {/* <Link href="/profile">
-            <User />
-          </Link> */}
           <Dialog>
             <DialogTrigger asChild>
               <Button>

@@ -121,7 +121,7 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input placeholder={profile?.name || ""} {...field} />
                   </FormControl>

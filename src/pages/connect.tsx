@@ -27,6 +27,13 @@ const CardList = ({
     .filter(({ interests }) => interests.length > 0)
     .sort((a, b) => b.interests.length - a.interests.length);
 
+  if (cards.length === 0) {
+    return (
+      <div className="mt-10 flex h-full items-center justify-center">
+        <p>No other users found matching your interests.</p>
+      </div>
+    );
+  }
   return (
     <div className="p-4">
       {cards.map(({ id, title, interests }) => (
