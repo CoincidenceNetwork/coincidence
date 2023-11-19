@@ -27,6 +27,7 @@ import { UploadButton } from "@/lib/uploadthing";
 import { postUserData } from "@/lib/wakunet/waku";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LightNode } from "@waku/sdk";
+import { PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -223,9 +224,48 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
             <Button type="submit">Submit</Button>
           </form>
         </Form>
+
+        <EASInterests />
       </main>
     </>
   );
 };
 
 export default ProfilePage;
+
+const EASInterests = () => {
+  const [interest, setInterest] = useState("");
+
+
+  
+  return (
+    <>
+      <Sheet>
+        <SheetTrigger>Add Interests</SheetTrigger>
+        <SheetContent side={"bottom"} className="w-[400px] sm:w-[540px]">
+          <SheetHeader>
+            <SheetTitle>What are your interests?</SheetTitle>
+            <SheetDescription>
+              Add below to attest your interest.
+            </SheetDescription>
+          </SheetHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Interest
+              </Label>
+              <Input
+                id="name"
+                value="Public Good"
+                onChange={(e) => {
+                  setInterest(e.target.value);
+                }}
+                className="col-span-3"
+              />
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+    </>
+  );
+};
