@@ -20,13 +20,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { offChainAttest } from "@/lib/eas";
 import { walletClientToSigner } from "@/lib/eas-wagmi-utils";
 import useStore from "@/lib/store";
 import { UploadButton } from "@/lib/uploadthing";
-import { userDataConformance } from "@/lib/userUtils";
+import {
+  getStoredProfile,
+  userDataConformance
+} from "@/lib/userUtils";
 import { postUserData } from "@/lib/wakunet/waku";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LightNode } from "@waku/sdk";
@@ -35,12 +37,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useWalletClient } from "wagmi";
 import { z } from "zod";
-
-import {
-  getStoredProfile,
-  userDataConformance,
-  userDataConformance as userDataWithID,
-} from "@/lib/userUtils";
 import { UserProfile } from "../types/alltypes";
 
 // TODO: Integrate attestation
