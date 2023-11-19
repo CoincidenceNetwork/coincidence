@@ -27,13 +27,12 @@ import { UploadButton } from "@/lib/uploadthing";
 import { postUserData } from "@/lib/wakunet/waku";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LightNode } from "@waku/sdk";
-import { PlusCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { UserProfile } from "../types/alltypes";
 import { userDataConformance } from "@/lib/userUtils";
+import { UserProfile } from "../types/alltypes";
 
 // TODO: Integrate attestation
 // - Connect Wallet WalletConnect + Metamask
