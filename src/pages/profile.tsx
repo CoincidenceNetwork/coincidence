@@ -2,9 +2,17 @@ import Header from "@/components/header";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -12,23 +20,20 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { offChainAttest } from "@/lib/eas";
+import { walletClientToSigner } from "@/lib/eas-wagmi-utils";
 import useStore from "@/lib/store";
 import { UploadButton } from "@/lib/uploadthing";
+import { userDataConformance } from "@/lib/userUtils";
 import { postUserData } from "@/lib/wakunet/waku";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LightNode } from "@waku/sdk";
+import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useWalletClient } from "wagmi";
 import { z } from "zod";
 
 import {
@@ -85,7 +90,7 @@ const items = [
 ] as const;
 
 const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
-  const { context, setContext } = useStore();
+  const { context, setContext, interests, setInterests } = useStore();
 
   const [profile, setProfile] = useState<UserProfile>(getStoredProfile());
 
@@ -173,11 +178,9 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
               name="interests"
               render={() => (
                 <FormItem>
-                  <div className="mb-4">
+                  <div className="mb-4 flex flex-row justify-between">
                     <FormLabel className="text-base">Interests</FormLabel>
-                    <FormDescription>
-                      Select the items you want to display in the sidebar.
-                    </FormDescription>
+                    <EASInterests />
                   </div>
                   {items.map((item) => (
                     <FormField
@@ -219,8 +222,6 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
             <Button type="submit">Submit</Button>
           </form>
         </Form>
-
-        <EASInterests />
       </main>
     </>
   );
@@ -229,19 +230,37 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
 export default ProfilePage;
 
 const EASInterests = () => {
-  const [interest, setInterest] = useState("");
+  const [currentInterest, setCurrentInterest] = useState("");
+  const { context, setContext, interests, setInterests } = useStore();
+  // const signer = useSigner();
+  const { data: walletClient, isError, isLoading } = useWalletClient();
+
+  const attest = async () => {
+    if (walletClient) {
+      const etherSigner = await walletClientToSigner(walletClient);
+
+      const signedOffAttestation = await offChainAttest(etherSigner);
+      console.log(
+        "🚀 ~ file: profile.tsx:283 ~ onClick={ ~ signedOffAttestation:",
+        signedOffAttestation,
+      );
+      setInterests([{ id: "eas", name: currentInterest }]);
+    }
+  };
 
   return (
     <>
-      <Sheet>
-        <SheetTrigger>Add Interests</SheetTrigger>
-        <SheetContent side={"bottom"} className="w-[400px] sm:w-[540px]">
-          <SheetHeader>
-            <SheetTitle>What are your interests?</SheetTitle>
-            <SheetDescription>
+      <Dialog>
+        <DialogTrigger asChild>
+          <PlusCircle />
+        </DialogTrigger>
+        <DialogContent className="w-[400px] sm:w-[540px]">
+          <DialogHeader>
+            <DialogTitle>What are your interests?</DialogTitle>
+            <DialogDescription>
               Add below to attest your interest.
-            </SheetDescription>
-          </SheetHeader>
+            </DialogDescription>
+          </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="name" className="text-right">
@@ -250,15 +269,25 @@ const EASInterests = () => {
               <Input
                 id="name"
                 value="Public Good"
-                onChange={(e) => {
-                  setInterest(e.target.value);
+                onChange={async (e) => {
+                  setCurrentInterest(e.target.value);
                 }}
                 className="col-span-3"
               />
             </div>
           </div>
-        </SheetContent>
-      </Sheet>
+          <DialogFooter>
+            <Button
+              onClick={async () => {
+                console.log("hello");
+                await attest();
+              }}
+            >
+              Confirm
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
