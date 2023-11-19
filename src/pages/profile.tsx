@@ -32,9 +32,15 @@ import { LightNode } from "@waku/sdk";
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useWalletClient } from "wagmi";
+import {
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  useWalletClient,
+} from "wagmi";
 import { z } from "zod";
 import { UserProfile } from "../types/alltypes";
+import { abi } from "../lib/abi";
 
 // TODO: Integrate attestation
 // - Connect Wallet WalletConnect + Metamask
@@ -59,6 +65,19 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
   const { context, setContext, interests, setInterests } = useStore();
 
   const [profile, setProfile] = useState<UserProfile>(getStoredProfile());
+  const { address } = useAccount();
+  const { data } = useContractRead({
+    address: address,
+    abi: abi,
+    functionName: "status",
+    args: ["0xA0Cf798816D4b9b9866b5330EEa46a18382f251e"],
+  });
+
+  const { write } = useContractWrite({
+    address: "0x2e0bB37BE1987a123e9F4290eB8a3ed377F52664",
+    abi: abi,
+    functionName: "updateStatus",
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -85,6 +104,11 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
     <>
       <Header></Header>
       <main className="flex min-h-[calc(100vh-64px)] w-full flex-col px-8 py-20">
+        {data ? `My Status: ${data}` : ""}
+        {/* <div>
+          <Input />
+          <Button onClick={() => write({ args: ["Sunny"] })}>Update</Button>
+        </div> */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -146,7 +170,7 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
                 <FormItem>
                   <div className="mb-4 flex flex-row justify-between">
                     <FormLabel className="text-base">Interests</FormLabel>
-                    <EASInterests />
+                    <EASInterests userAddress={address} />
                   </div>
                   {interests.map((item) => (
                     <FormField
@@ -161,13 +185,16 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
                           >
                             <FormControl>
                               <Checkbox
-                                checked={field.value?.includes(item.id)}
+                                checked={field.value?.includes(item.name)}
                                 onCheckedChange={(checked) => {
                                   return checked
-                                    ? field.onChange([...field.value, item.id])
+                                    ? field.onChange([
+                                        ...field.value,
+                                        item.name,
+                                      ])
                                     : field.onChange(
                                         field.value?.filter(
-                                          (value) => value !== item.id,
+                                          (value) => value !== item.name,
                                         ),
                                       );
                                 }}
@@ -185,7 +212,16 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <div className="flex flex-row gap-2">
+              <Button type="submit">Submit</Button>
+              <Button
+                onClick={() => {
+                  form.reset();
+                }}
+              >
+                Reset
+              </Button>
+            </div>
           </form>
         </Form>
       </main>
@@ -195,7 +231,7 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
 
 export default ProfilePage;
 
-const EASInterests = () => {
+const EASInterests = ({ userAddress }: { userAddress: string | undefined }) => {
   const [toggleDialog, setToggleDialog] = useState(false);
   const [currentInterest, setCurrentInterest] = useState("");
   const { context, setContext, interests, setInterests } = useStore();
@@ -206,7 +242,11 @@ const EASInterests = () => {
     if (walletClient) {
       const etherSigner = await walletClientToSigner(walletClient);
 
-      const signedOffAttestation = await offChainAttest(etherSigner);
+      const signedOffAttestation = await offChainAttest(
+        etherSigner,
+        currentInterest,
+        userAddress || "0x123",
+      );
       console.log(
         "🚀 ~ file: profile.tsx:283 ~ onClick={ ~ signedOffAttestation:",
         signedOffAttestation,
