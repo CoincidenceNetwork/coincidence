@@ -64,6 +64,7 @@ const formSchema = z.object({
 
 const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
   const { context, setContext, interests, setInterests } = useStore();
+  const [scrollStatus, setScrollStatus] = useState("");
 
   const [profile, setProfile] = useState<UserProfile>(getStoredProfile());
   const { address } = useAccount();
@@ -107,8 +108,8 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
       <main className="flex min-h-[calc(100vh-64px)] w-full flex-col px-8 py-20">
         <div>
           {data ? `My Status: ${data}` : ""}
-          <div>
-            <Input />
+          <div className="flex flex-row gap-2">
+            <Input onChange={(e) => setScrollStatus(e.target.value)} />
             <Button onClick={() => write({ args: ["Sunny"] })}>Update</Button>
           </div>
         </div>

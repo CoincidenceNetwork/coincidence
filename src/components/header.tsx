@@ -27,7 +27,8 @@ const Header = () => {
       className={`fixed left-0 top-0 z-10 w-full bg-background shadow-md`}
     >
       <nav className="flex items-center justify-between px-4 py-4 text-slate-800">
-        <Link href="/">
+        <Link href="/" className="flex flex-row gap-2 items-center">
+          <img src="/logo.svg" alt="" className="w-8" />
           <div className="text-xl font-bold">Coincidence</div>
         </Link>
         <div className="flex flex-row items-center gap-2">
