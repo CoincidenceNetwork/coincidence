@@ -1,13 +1,13 @@
 /*
-    topic
-    encoder decoders (json is ok alternative)
-      separate encoder for topic
-      separate encoder for writing messages (ephemeral param e.g. handshakes)
-      https://js.waku.org/modules/_waku_message_encryption.html for encrypting 
-    waku = create light node (light push, filter, store)
-    subscribe for new messags
-    query for past messages
-  */
+  topic
+  encoder decoders (json is ok alternative)
+    separate encoder for topic
+    separate encoder for writing messages (ephemeral param e.g. handshakes)
+    https://js.waku.org/modules/_waku_message_encryption.html for encrypting 
+  waku = create light node (light push, filter, store)
+  subscribe for new messags
+  query for past messages
+*/
 
 import protobuf from "protobufjs";
 import {
@@ -18,6 +18,8 @@ import {
   createEncoder,
   DecodedMessage,
 } from "@waku/sdk";
+
+// sorry, for TypeScript-related issues this is in JavaScript.
 
 // export interface UserDataMessage {
 //   name: string;
