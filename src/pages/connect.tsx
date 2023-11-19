@@ -10,12 +10,14 @@ import { DecodedMessage, LightNode } from "@waku/sdk";
 import { useEffect, useState } from "react";
 
 const CardList = ({ pastUserData }: { pastUserData: UserDataMessage[] }) => {
-  const cards = pastUserData.map(({ id, name, interests, img }) => ({
-    id,
-    title: name,
-    interests,
-    image: img,
-  }));
+  const cards = pastUserData
+    .sort((a, b) => b.interests.length - a.interests.length)
+    .map(({ id, name, interests, img }) => ({
+      id,
+      title: name,
+      interests,
+      image: img,
+    }));
 
   return (
     <div className="p-4">
@@ -49,7 +51,7 @@ const ConnectPage = ({ wakuNode }) => {
   const [usersData, setUsersData] = useState<any[]>([]);
 
   const processReceivedUserData = (userData: DecodedMessage) => {
-    console.log("Connect: Received user data!", userData);
+    // console.log("Connect: Received user data!", userData);
     try {
       setUsersData((prevData) => {
         const isUnique = !prevData.some((data) => data.id === userData.id);
