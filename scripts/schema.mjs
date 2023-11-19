@@ -1,5 +1,4 @@
 import { SchemaRegistry } from "@ethereum-attestation-service/eas-sdk";
-import { ethers } from "ethers";
 import { getSigner } from "./utils.mjs";
 
 const signer = getSigner();

@@ -8,6 +8,12 @@ import ClientOnly from "@/components/client-only";
 import { useEffect, useState } from "react";
 import { LightNode } from "@waku/sdk";
 import { createNode } from "@/lib/wakunet/waku";
+import { Web3Modal } from "@/context/Web3Modal";
+
+export const metadata = {
+  title: "Coincidence",
+  description: "Coincidence",
+};
 
 const Coincidence: AppType = ({ Component, pageProps }) => {
   // useEffect(() => {
@@ -45,7 +51,9 @@ const Coincidence: AppType = ({ Component, pageProps }) => {
         enableSystem
         disableTransitionOnChange
       >
-        <Component {...pageProps} wakuNode={wakuNode} />
+        <Web3Modal>
+          <Component {...pageProps} wakuNode={wakuNode} />
+        </Web3Modal>
         <Toaster />
         <BottomNavigation></BottomNavigation>
       </ThemeProvider>

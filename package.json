@@ -38,6 +38,7 @@
     "@uploadthing/react": "^6.0.0",
     "@wagmi/core": "^1.4.7",
     "@waku/sdk": "^0.0.21",
+    "@web3modal/wagmi": "^3.3.2",
     "ai": "^2.2.24",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
