@@ -1,37 +1,15 @@
 /*
 psi.encrypt_interests(userID, interests[userID]) -> encryptedInterests[userID]
-
 */
 
-class PrivateSetIntersection {}
-
-class NonPrivateSetIntersection {
-  private interests: Map<string, Set<string>>;
-
-  constructor() {
-    this.interests = new Map<string, Set<string>>();
-  }
-
-  add_interests(userID: string, userInterests: string[]): void {
-    this.interests.set(userID, new Set(userInterests));
-  }
-
-  get_interests(userID: string): Set<string> | undefined {
-    return this.interests.get(userID);
-  }
-
-  intersection(userID: string, otherInterests: string[]): Set<string> {
-    const myInterests = this.get_interests(userID);
-    if (!myInterests) {
-      return new Set();
-    }
-
-    const otherInterestsSet = new Set(otherInterests);
-    return new Set([...myInterests].filter((x) => otherInterestsSet.has(x)));
-  }
+export function nonpsi_intersection(
+  myInterests: string[],
+  otherInterests: string[],
+): Set<string> {
+  const myInterestsSet = new Set(myInterests);
+  const otherInterestsSet = new Set(otherInterests);
+  return new Set([...myInterestsSet].filter((x) => otherInterestsSet.has(x)));
 }
-
-export { NonPrivateSetIntersection, PrivateSetIntersection };
 
 /*
   testing simple PSI flow

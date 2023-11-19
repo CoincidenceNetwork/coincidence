@@ -31,7 +31,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { userDataConformance } from "@/lib/userUtils";
+import {
+  getStoredProfile,
+  userDataConformance,
+  userDataConformance as userDataWithID,
+} from "@/lib/userUtils";
 import { UserProfile } from "../types/alltypes";
 
 // TODO: Integrate attestation
@@ -48,18 +52,10 @@ const formSchema = z.object({
   }),
   bio: z.string(),
   img: z.string(),
-  airplane: z.boolean(),
+  // airplane: z.boolean(),
   context: z.string(),
   interests: z.array(z.string()),
 });
-
-// export interface ProfileData {
-//   name: string;
-//   bio: string;
-//   img: string;
-//   context: string;
-//   interests: string[];
-// }
 
 const items = [
   {
@@ -91,18 +87,7 @@ const items = [
 const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
   const { context, setContext } = useStore();
 
-  const [profile, setProfile] = useState<UserProfile | null>(() => {
-    const storedProfile = localStorage.getItem("userProfile");
-    return storedProfile
-      ? (JSON.parse(storedProfile) as UserProfile)
-      : {
-          name: "",
-          bio: "",
-          img: "",
-          interests: [],
-          context: "",
-        };
-  });
+  const [profile, setProfile] = useState<UserProfile>(getStoredProfile());
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -111,15 +96,18 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
       bio: "",
       img: "",
       interests: [],
-      airplane: false,
+      // airplane: false,
       context: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    localStorage.setItem("userProfile", JSON.stringify(profile));
-    setProfile(profile);
-    await postUserData(wakuNode, userDataConformance(values));
+    console.log("Form values:", values);
+    const updatedProfile = userDataConformance(values);
+    setProfile(updatedProfile);
+    console.log("Profile:", updatedProfile);
+    localStorage.setItem("userProfile", JSON.stringify(updatedProfile));
+    await postUserData(wakuNode, updatedProfile);
   }
 
   return (
@@ -165,7 +153,7 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
                 alert(`ERROR! ${error.message}`);
               }}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="airplane"
               render={({ field }) => (
@@ -179,7 +167,7 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
                   </FormControl>
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="interests"
@@ -243,8 +231,6 @@ export default ProfilePage;
 const EASInterests = () => {
   const [interest, setInterest] = useState("");
 
-
-  
   return (
     <>
       <Sheet>

@@ -1,24 +1,31 @@
 import Header from "@/components/header";
-import { NonPrivateSetIntersection } from "@/lib/psi/PSI";
+import { nonpsi_intersection } from "@/lib/psi/PSI";
+import { getStoredProfile } from "@/lib/userUtils";
+import { getExistingUserData, subscribeToUserData } from "@/lib/wakunet/waku";
 import {
-  createNode,
-  getExistingUserData,
-  getPastMessages,
-  subscribeToUserData,
-} from "@/lib/wakunet/waku";
-import { PUserDataMessage, UserDataMessage } from "@/types/alltypes";
+  PUserDataMessage,
+  UserDataMessage,
+  UserProfile,
+} from "@/types/alltypes";
 import { DecodedMessage, LightNode } from "@waku/sdk";
 import { useEffect, useState } from "react";
 
-const CardList = ({ pastUserData }: { pastUserData: UserDataMessage[] }) => {
+const CardList = ({
+  pastUserData,
+  intersections,
+}: {
+  pastUserData: UserDataMessage[];
+  intersections: { [id: string]: string[] };
+}) => {
   const cards = pastUserData
-    .sort((a, b) => b.interests.length - a.interests.length)
     .map(({ id, name, interests, img }) => ({
       id,
       title: name,
-      interests,
+      interests: intersections[id] || [],
       image: img,
-    }));
+    }))
+    .filter(({ interests }) => interests.length > 0)
+    .sort((a, b) => b.interests.length - a.interests.length);
 
   return (
     <div className="p-4">
@@ -47,19 +54,35 @@ const CardList = ({ pastUserData }: { pastUserData: UserDataMessage[] }) => {
 };
 
 const ConnectPage = ({ wakuNode }: { wakuNode: LightNode }) => {
-  // const context = localStorage.getItem("context");
+  const [profile, setProfile] = useState<UserProfile>(getStoredProfile());
 
   const [usersData, setUsersData] = useState<UserDataMessage[]>([]);
+  const [intersections, setIntersections] = useState<{
+    [id: string]: string[];
+  }>({});
 
-  const psi = new NonPrivateSetIntersection();
-
-  const processReceivedUserData = (userData: DecodedMessage) => {
-    // console.log("Connect: Received user data!", userData);
+  const processReceivedUserData = (userData: UserDataMessage) => {
+    console.log("Connect: Received user data!", userData);
     try {
       setUsersData((prevData) => {
         const isUnique = !prevData.some((data) => data.id === userData.id);
-        if (isUnique) {
-          return [...prevData, userData];
+        console.log("Is the received user data unique?", isUnique);
+        if (isUnique && userData.id !== profile.id) {
+          const commonInterests = nonpsi_intersection(
+            profile.interests,
+            userData.interests,
+          );
+          console.log("Common interests found:", commonInterests);
+          setIntersections((prevIntersections) => ({
+            ...prevIntersections,
+            [userData.id]: [...commonInterests],
+          }));
+          const updatedUserData = {
+            ...userData,
+            commonInterests: [...commonInterests],
+          };
+          console.log("Updated user data:", updatedUserData);
+          return [...prevData, updatedUserData];
         } else {
           return prevData;
         }
@@ -69,6 +92,8 @@ const ConnectPage = ({ wakuNode }: { wakuNode: LightNode }) => {
     }
   };
 
+  console.log("intersections", intersections);
+
   useEffect(() => {
     if (!wakuNode) return;
     const obtainingUserData = async () => {
@@ -77,17 +102,16 @@ const ConnectPage = ({ wakuNode }: { wakuNode: LightNode }) => {
       await subscribeToUserData(wakuNode, processReceivedUserData);
     };
     obtainingUserData();
-  }, []);
+  }, [wakuNode]);
 
   if (!usersData) {
     return <div>Loading user data...</div>;
   }
-
   return (
     <>
       <Header></Header>
       <main className="flex min-h-[calc(100vh-64px)] w-full flex-col px-8 py-20">
-        <CardList pastUserData={usersData} />
+        <CardList pastUserData={usersData} intersections={intersections} />
       </main>
     </>
   );

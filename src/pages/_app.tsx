@@ -17,10 +17,6 @@ export const metadata = {
 };
 
 const Coincidence: AppType = ({ Component, pageProps, router }) => {
-  // useEffect(() => {
-  //   localStorage.setItem("debug", "waku*"); // TBD unsure if this works
-  // }, []);
-
   const [wakuNode, setWakuNode] = useState<LightNode | null>(null);
   useEffect(() => {
     if (wakuNode) return;
