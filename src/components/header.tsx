@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-function shortenAddress(address: string, length: number = 4): string {
+function shortenAddress(address: string, length: number = 8): string {
   const prefixLength = Math.floor(length / 2);
   const suffixLength = length - prefixLength;
   return `${address.slice(0, prefixLength)}...${address.slice(-suffixLength)}`;

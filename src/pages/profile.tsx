@@ -25,10 +25,7 @@ import { offChainAttest } from "@/lib/eas";
 import { walletClientToSigner } from "@/lib/eas-wagmi-utils";
 import useStore from "@/lib/store";
 import { UploadButton } from "@/lib/uploadthing";
-import {
-  getStoredProfile,
-  userDataConformance
-} from "@/lib/userUtils";
+import { getStoredProfile, userDataConformance } from "@/lib/userUtils";
 import { postUserData } from "@/lib/wakunet/waku";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LightNode } from "@waku/sdk";
@@ -178,7 +175,7 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
                     <FormLabel className="text-base">Interests</FormLabel>
                     <EASInterests />
                   </div>
-                  {items.map((item) => (
+                  {interests.map((item) => (
                     <FormField
                       key={item.id}
                       control={form.control}
@@ -204,7 +201,7 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
                               />
                             </FormControl>
                             <FormLabel className="font-normal">
-                              {item.label}
+                              {item.name}
                             </FormLabel>
                           </FormItem>
                         );
@@ -226,6 +223,7 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
 export default ProfilePage;
 
 const EASInterests = () => {
+  const [toggleDialog, setToggleDialog] = useState(false);
   const [currentInterest, setCurrentInterest] = useState("");
   const { context, setContext, interests, setInterests } = useStore();
   // const signer = useSigner();
@@ -240,15 +238,17 @@ const EASInterests = () => {
         "🚀 ~ file: profile.tsx:283 ~ onClick={ ~ signedOffAttestation:",
         signedOffAttestation,
       );
-      setInterests([{ id: "eas", name: currentInterest }]);
+      setInterests([{ id: signedOffAttestation.uid, name: currentInterest}]);
+
+      setToggleDialog(!toggleDialog);
     }
   };
 
   return (
     <>
-      <Dialog>
+      <Dialog open={toggleDialog}>
         <DialogTrigger asChild>
-          <PlusCircle />
+          <PlusCircle onClick={() => setToggleDialog(!toggleDialog)} />
         </DialogTrigger>
         <DialogContent className="w-[400px] sm:w-[540px]">
           <DialogHeader>
@@ -264,7 +264,7 @@ const EASInterests = () => {
               </Label>
               <Input
                 id="name"
-                value="Public Good"
+                value={currentInterest}
                 onChange={async (e) => {
                   setCurrentInterest(e.target.value);
                 }}
@@ -275,7 +275,6 @@ const EASInterests = () => {
           <DialogFooter>
             <Button
               onClick={async () => {
-                console.log("hello");
                 await attest();
               }}
             >
