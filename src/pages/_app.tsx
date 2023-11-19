@@ -9,13 +9,14 @@ import { useEffect, useState } from "react";
 import { LightNode } from "@waku/sdk";
 import { createNode } from "@/lib/wakunet/waku";
 import { Web3Modal } from "@/context/Web3Modal";
+import Home from ".";
 
 export const metadata = {
   title: "Coincidence",
   description: "Coincidence",
 };
 
-const Coincidence: AppType = ({ Component, pageProps }) => {
+const Coincidence: AppType = ({ Component, pageProps, router }) => {
   // useEffect(() => {
   //   localStorage.setItem("debug", "waku*"); // TBD unsure if this works
   // }, []);
@@ -29,7 +30,11 @@ const Coincidence: AppType = ({ Component, pageProps }) => {
     })();
   }, []);
 
-  if (!wakuNode) {
+  // If wakuNode is not loaded and we're on the index route, render the index page
+  if (!wakuNode && router.route === "/") {
+    return <Home />;
+  } else if (!wakuNode) {
+    // If wakuNode is not loaded, show loading for node
     return (
       <div
         style={{

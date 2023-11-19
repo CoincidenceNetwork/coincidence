@@ -1,4 +1,5 @@
 import Header from "@/components/header";
+import { NonPrivateSetIntersection } from "@/lib/psi/PSI";
 import {
   createNode,
   getExistingUserData,
@@ -45,10 +46,12 @@ const CardList = ({ pastUserData }: { pastUserData: UserDataMessage[] }) => {
   );
 };
 
-const ConnectPage = ({ wakuNode }) => {
+const ConnectPage = ({ wakuNode }: { wakuNode: LightNode }) => {
   // const context = localStorage.getItem("context");
 
-  const [usersData, setUsersData] = useState<any[]>([]);
+  const [usersData, setUsersData] = useState<UserDataMessage[]>([]);
+
+  const psi = new NonPrivateSetIntersection();
 
   const processReceivedUserData = (userData: DecodedMessage) => {
     // console.log("Connect: Received user data!", userData);
