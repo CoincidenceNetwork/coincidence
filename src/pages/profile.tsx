@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -39,8 +40,8 @@ import {
   useWalletClient,
 } from "wagmi";
 import { z } from "zod";
-import { UserProfile } from "../types/alltypes";
 import { abi } from "../lib/abi";
+import { UserProfile } from "../types/alltypes";
 
 // TODO: Integrate attestation
 // - Connect Wallet WalletConnect + Metamask
@@ -104,11 +105,13 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
     <>
       <Header></Header>
       <main className="flex min-h-[calc(100vh-64px)] w-full flex-col px-8 py-20">
-        {data ? `My Status: ${data}` : ""}
-        {/* <div>
-          <Input />
-          <Button onClick={() => write({ args: ["Sunny"] })}>Update</Button>
-        </div> */}
+        <div>
+          {data ? `My Status: ${data}` : ""}
+          <div>
+            <Input />
+            <Button onClick={() => write({ args: ["Sunny"] })}>Update</Button>
+          </div>
+        </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -296,6 +299,18 @@ const EASInterests = ({ userAddress }: { userAddress: string | undefined }) => {
             >
               Confirm
             </Button>
+
+            <DialogClose asChild>
+              <Button
+                onClick={async () => {
+                  setToggleDialog(!toggleDialog);
+                }}
+                type="button"
+                variant="secondary"
+              >
+                Close
+              </Button>
+            </DialogClose>
           </DialogFooter>
         </DialogContent>
       </Dialog>
