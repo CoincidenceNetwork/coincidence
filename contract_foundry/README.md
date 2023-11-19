@@ -1,3 +1,8 @@
+## Deployments
+
+Scroll Sepolia contract address:
+0x2e0bB37BE1987a123e9F4290eB8a3ed377F52664
+
 ## Foundry
 
 **Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
