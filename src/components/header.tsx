@@ -3,6 +3,15 @@ import Link from "next/link";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { Button } from "./ui/button";
 import { useAccount } from "wagmi";
+import { MetaMaskButton } from "@metamask/sdk-react-ui";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 function shortenAddress(address: string, length: number = 4): string {
   const prefixLength = Math.floor(length / 2);
@@ -23,16 +32,39 @@ const Header = () => {
           <div className="font-bold">Coincidence</div>
         </Link>
         <div className="flex flex-row items-center gap-2">
-          <Link href="/profile">
+          {/* <Link href="/profile">
             <User />
-          </Link>
-          <Button
-            onClick={() => {
-              open();
-            }}
-          >
-            {isConnected ? shortenAddress(address!) : "Connect"}
-          </Button>
+          </Link> */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>
+                {isConnected ? shortenAddress(address!) : "Connect"}
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Connect Wallet</DialogTitle>
+                <DialogDescription>
+                  Choose between Metamask or WalletConnect to connect your
+                  wallet.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="flex w-full flex-col items-center gap-4">
+                <MetaMaskButton
+                  theme={"light"}
+                  color="white"
+                  text={isConnected ? shortenAddress(address!) : "Metamask"}
+                />
+                <Button
+                  onClick={() => {
+                    open();
+                  }}
+                >
+                  {isConnected ? shortenAddress(address!) : "WalletConnect"}
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </nav>
     </header>

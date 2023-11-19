@@ -1,7 +1,6 @@
 import { type AppType } from "next/dist/shared/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
-
 import "@/styles/globals.css";
 import BottomNavigation from "@/components/bottom-navigation";
 import ClientOnly from "@/components/client-only";
@@ -10,6 +9,7 @@ import { LightNode } from "@waku/sdk";
 import { createNode } from "@/lib/wakunet/waku";
 import { Web3Modal } from "@/context/Web3Modal";
 import Home from ".";
+import { MetaMaskUIProvider } from "@metamask/sdk-react-ui";
 
 export const metadata = {
   title: "Coincidence",
@@ -57,7 +57,15 @@ const Coincidence: AppType = ({ Component, pageProps, router }) => {
         disableTransitionOnChange
       >
         <Web3Modal>
-          <Component {...pageProps} wakuNode={wakuNode} />
+          <MetaMaskUIProvider
+            sdkOptions={{
+              dappMetadata: {
+                name: "Coincidence",
+              },
+            }}
+          >
+            <Component {...pageProps} wakuNode={wakuNode} />
+          </MetaMaskUIProvider>
         </Web3Modal>
         <Toaster />
         <BottomNavigation></BottomNavigation>

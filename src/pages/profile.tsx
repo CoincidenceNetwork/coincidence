@@ -35,6 +35,14 @@ import { z } from "zod";
 import { UserProfile } from "../types/alltypes";
 import { userDataConformance } from "@/lib/userUtils";
 
+// TODO: Integrate attestation
+// - Connect Wallet WalletConnect + Metamask
+// - Create new interest with EAS
+// - Save the interest as option on UI
+// - Submit Waku my interests
+// - On Connect page. On match, exchange and verify attestation.
+// - Open Chat 1 to 1.
+
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "Username must be at least 2 characters.",
