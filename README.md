@@ -1,13 +1,10 @@
 # Coincidence
 
-<img src="logo.png" alt="Coincidence Logo" height="250px"/>
+<img src="./public/logo.png" alt="Coincidence Logo" height="222px"/>
 
-TBD
+Connect, collaborate, & coincide, privately.
 
-Made during ETH Global Istanbul 2023.
-
-
-## How to run
+Created during ETH Global Istanbul 2023.
 
 ## Problem it solves
 
@@ -15,23 +12,32 @@ Most match-making apps focus on dating, limiting other social interactions. They
 
 ## How it works
 
--Create profile
--Add your interests
--Coincide with people sharing your interests
--Chat with your new friends
+Visit https://app.coincidence.network/.
 
+- Create profile
+- Add your interests
+- Coincide with people sharing your interests
+- Chat with your new friends
+
+## How to run
+
+To run locally:
+
+```shell
+npm install && npm run dev
+```
 
 ## Challenges during implementation
 
-TBD
-
-EAS
-ethers 5 version incompatibility with eas sdk. all schemas are unique, which is why all my second attempts always run into error.
+- TBD
+- EAS: ethers v5 incompatibility with the EAS sdk. All schemas are unique, which is why all second attempts always run into error.
+- Implementation of a full PSI protocol was over our time\*complexity budget.
+- We had some difficulties with the Typescript build system, pushing us to use Javascript in some places.
 
 ## Authors and licensing
 
 - Orpheus (https://github.com/orpheuslummis)
-- Giovanni
-- Manuela
+- Giovanni Fulin (https://github.com/aeither)
+- Manuela Garcia Toro (https://github.com/AlumnaeGracia)
 
 MIT license.
