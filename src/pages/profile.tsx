@@ -27,9 +27,12 @@ import { UploadButton } from "@/lib/uploadthing";
 import { postUserData } from "@/lib/wakunet/waku";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LightNode } from "@waku/sdk";
-import { PlusCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+import { UserProfile } from "../types/alltypes";
+import { userDataConformance } from "@/lib/userUtils";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -37,7 +40,7 @@ const formSchema = z.object({
   }),
   bio: z.string(),
   img: z.string(),
-  airpline: z.boolean(),
+  airplane: z.boolean(),
   context: z.string(),
   interests: z.array(z.string()),
 });
@@ -77,56 +80,41 @@ const items = [
   },
 ] as const;
 
-const ProfilePage = (wakuNode: LightNode) => {
+const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
   const { context, setContext } = useStore();
 
-  // TBD for the form inputs?
-  // const [name, setName] = useState("");
-  // const [bio, setBio] = useState("");
-  // const [img, setImg] = useState("");
-  // const [interests, setInterests] = useState([]);
-  // const handleSubmit = (node: LightNode, event: any) => {
-  //   event.preventDefault();
-  //   const profileData = { name, bio, img, context, interests };
-  //   handleProfileSend(node, profileData);
-  // };
-
-  // form function, also saves context to localstorage
-  // async function handleProfileSend(node: LightNode, profileData: ProfileData) {
-  //   const context = profileData.context;
-  //   // localStorage.setItem("context", context); TBD
-  //   const userData: UserDataMessage = {
-  //     name: profileData.name,
-  //     bio: profileData.bio,
-  //     img: profileData.img,
-  //     interests: profileData.interests,
-  //   };
-  //   postUserData(node, userData);
-  // }
+  const [profile, setProfile] = useState<UserProfile | null>(() => {
+    const storedProfile = localStorage.getItem("userProfile");
+    return storedProfile
+      ? (JSON.parse(storedProfile) as UserProfile)
+      : {
+          name: "",
+          bio: "",
+          img: "",
+          interests: [],
+          context: "",
+        };
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: profile || {
       name: "",
       bio: "",
-      airpline: false,
-      context: "",
       img: "",
-      interests: [""],
+      interests: [],
+      airplane: false,
+      context: "",
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-
-    // postUserData(node, values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    localStorage.setItem("userProfile", JSON.stringify(profile));
+    setProfile(profile);
+    await postUserData(wakuNode, userDataConformance(values));
   }
 
   return (
-    // TODO make this a form
     <>
       <Header></Header>
       <main className="flex min-h-[calc(100vh-64px)] w-full flex-col px-8 py-20">
@@ -139,7 +127,7 @@ const ProfilePage = (wakuNode: LightNode) => {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="vitalik" {...field} />
+                    <Input placeholder={profile?.name || ""} {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -151,7 +139,7 @@ const ProfilePage = (wakuNode: LightNode) => {
                 <FormItem>
                   <FormLabel>Biography</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="vitalik" {...field} />
+                    <Textarea placeholder={profile?.bio || ""} {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -159,33 +147,19 @@ const ProfilePage = (wakuNode: LightNode) => {
             <UploadButton
               endpoint="imageUploader"
               onClientUploadComplete={(res) => {
-                // Do something with the response
                 console.log("Files: ", res);
                 form.setValue(
                   "img",
-                  res[0]?.url ? res[0].url : "https://picsum.photos/200 ",
+                  res[0]?.url ? res[0].url : profile?.img || "",
                 );
               }}
               onUploadError={(error: Error) => {
-                // Do something with the error.
                 alert(`ERROR! ${error.message}`);
               }}
             />
-            {/* <FormField
-              control={form.control}
-              name="img"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Avatar</FormLabel>
-                  <FormControl>
-                    <Input type="file" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            /> */}
             <FormField
               control={form.control}
-              name="airpline"
+              name="airplane"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                   <FormLabel className="text-base">Airplane Mode</FormLabel>

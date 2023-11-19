@@ -1,6 +1,15 @@
 import protobuf from "protobufjs";
 
+export interface UserProfile {
+  name: string;
+  bio: string;
+  img: string;
+  context: string;
+  interests: string[];
+}
+
 export interface UserDataMessage {
+  id: string;
   name: string;
   bio: string;
   img: string;
