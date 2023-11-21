@@ -64,7 +64,6 @@ const Coincidence: AppType = ({ Component, pageProps, router }) => {
           </MetaMaskUIProvider>
         </Web3Modal>
         <Toaster />
-        <BottomNavigation></BottomNavigation>
       </ThemeProvider>
     </ClientOnly>
   );

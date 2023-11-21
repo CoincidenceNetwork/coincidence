@@ -42,6 +42,7 @@ import {
 import { z } from "zod";
 import { abi } from "../lib/abi";
 import { UserProfile } from "../types/alltypes";
+import BottomNavigation from "@/components/bottom-navigation";
 
 // TODO: Integrate attestation
 // - Connect Wallet WalletConnect + Metamask
@@ -105,14 +106,7 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
   return (
     <>
       <Header></Header>
-      <main className="flex min-h-[calc(100vh-64px)] w-full flex-col px-8 py-20">
-        <div>
-          {data ? `My Status: ${data}` : ""}
-          <div className="flex flex-row gap-2">
-            <Input onChange={(e) => setScrollStatus(e.target.value)} />
-            <Button onClick={() => write({ args: ["Sunny"] })}>Update</Button>
-          </div>
-        </div>
+      <main className="flex  w-full flex-col px-8">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -139,19 +133,23 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
                 </FormItem>
               )}
             />
-            <UploadButton
-              endpoint="imageUploader"
-              onClientUploadComplete={(res) => {
-                console.log("Files: ", res);
-                form.setValue(
-                  "img",
-                  res[0]?.url ? res[0].url : profile?.img || "",
-                );
-              }}
-              onUploadError={(error: Error) => {
-                alert(`ERROR! ${error.message}`);
-              }}
-            />
+            <div>
+              <FormLabel>Profile image</FormLabel>
+              <UploadButton
+                endpoint="imageUploader"
+                onClientUploadComplete={(res) => {
+                  console.log("Files: ", res);
+                  form.setValue(
+                    "img",
+                    res[0]?.url ? res[0].url : profile?.img || "",
+                  );
+                }}
+                onUploadError={(error: Error) => {
+                  alert(`ERROR! ${error.message}`);
+                }}
+              />
+            </div>
+
             {/* <FormField
               control={form.control}
               name="airplane"
@@ -229,6 +227,7 @@ const ProfilePage = ({ wakuNode }: { wakuNode: LightNode }) => {
           </form>
         </Form>
       </main>
+      <BottomNavigation />
     </>
   );
 };

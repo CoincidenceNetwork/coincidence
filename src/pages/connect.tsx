@@ -1,3 +1,4 @@
+import BottomNavigation from "@/components/bottom-navigation";
 import Header from "@/components/header";
 import { nonpsi_intersection } from "@/lib/psi/PSI";
 import { getStoredProfile } from "@/lib/userUtils";
@@ -117,9 +118,10 @@ const ConnectPage = ({ wakuNode }: { wakuNode: LightNode }) => {
   return (
     <>
       <Header></Header>
-      <main className="flex min-h-[calc(100vh-64px)] w-full flex-col px-8 py-20">
+      <main className="w-full flex-col px-8">
         <CardList pastUserData={usersData} intersections={intersections} />
       </main>
+      <BottomNavigation />
     </>
   );
 };

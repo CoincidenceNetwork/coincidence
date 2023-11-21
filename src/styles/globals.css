@@ -4,7 +4,7 @@
  
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    /* --background: 0 0% 100%; */
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -70,7 +70,17 @@
   * {
     @apply border-border;
   }
+  html {
+    @apply bg-[#F2E6DA]
+  }
   body {
-    @apply bg-background text-foreground;
+    @apply  text-foreground;
+    @apply max-w-2xl min-h-screen w-screen mx-auto relative;
+  }
+  main {
+    @apply justify-between py-6;
+    /* @apply shadow-xl shadow-inner; */
+    @apply bg-[#faf4ef] border-spacing-3;
+    @apply min-h-[calc(100vh-150px)];
   }
 }
