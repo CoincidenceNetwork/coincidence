@@ -5,6 +5,8 @@ const persons = [
   { name: "Tatarko Atishurko", interests: ["a", "b", "Public goods"] },
   { name: "Techno Blaklavha", interests: ["c", "d", "Waku"] },
   { name: "Mataito Bibito", interests: ["Waku", "Public goods", "12312"] },
+  { name: "Orfeo El Feo", interests: ["Public goods", "19237846", "12312"] },
+  { name: "Aguatala", interests: ["Water", "19237123846", "12123312"] },
 ];
 
 function userDataGenerator(name, interests) {
